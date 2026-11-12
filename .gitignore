@@ -1,0 +1,36 @@
+# Environment and secrets
+.env
+*.env
+srcs/.env
+secrets/
+
+# TLS certificates and private keys
+*.crt
+*.key
+*.pem
+
+# Local persistent data
+data/
+/srcs/data/
+/home/unovo-ru/data/
+
+# Docker and runtime artifacts
+*.log
+.docker/
+
+# Operating system files
+.DS_Store
+Thumbs.db
+*~
+
+# Editors and IDEs
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Build and test artifacts
+coverage/
+dist/
+build/
+.cache/

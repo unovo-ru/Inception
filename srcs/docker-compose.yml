@@ -1,0 +1,83 @@
+services:
+  nginx:
+    build:
+      context: ./requirements/nginx
+    container_name: inception-nginx
+    env_file:
+      - .env
+    depends_on:
+      wordpress:
+        condition: service_started
+    ports:
+      - "443:443"
+    networks:
+      - inception
+    volumes:
+      - wordpress_data:/var/www/html
+    secrets:
+      - tls_certificate
+      - tls_private_key
+    restart: unless-stopped
+
+  wordpress:
+    build:
+      context: ./requirements/wordpress
+    container_name: inception-wordpress
+    env_file:
+      - .env
+    depends_on:
+      mariadb:
+        condition: service_started
+    networks:
+      - inception
+    volumes:
+      - wordpress_data:/var/www/html
+    secrets:
+      - db_password
+    restart: unless-stopped
+
+  mariadb:
+    build:
+      context: ./requirements/mariadb
+    container_name: inception-mariadb
+    env_file:
+      - .env
+    networks:
+      - inception
+    volumes:
+      - mariadb_data:/var/lib/mysql
+    secrets:
+      - db_root_password
+      - db_password
+    restart: unless-stopped
+
+networks:
+  inception:
+    name: inception
+    driver: bridge
+
+volumes:
+  wordpress_data:
+    name: inception_wordpress_data
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /home/unovo-ru/data/wordpress
+  mariadb_data:
+    name: inception_mariadb_data
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /home/unovo-ru/data/mariadb
+
+secrets:
+  tls_certificate:
+    file: ../secrets/tls_certificate.crt
+  tls_private_key:
+    file: ../secrets/tls_private_key.key
+  db_root_password:
+    file: ../secrets/db_root_password.txt
+  db_password:
+    file: ../secrets/db_password.txt
