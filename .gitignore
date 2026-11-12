@@ -1,0 +1,26 @@
+# Environment and secrets
+.env
+**/.env
+*.env
+secrets/
+**/secrets/
+
+# Certificates and private keys
+*.crt
+*.key
+*.pem
+
+# Local persistent data
+data/
+/home/unovo-ru/data/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Editor and IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
